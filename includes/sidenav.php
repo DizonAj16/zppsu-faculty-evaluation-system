@@ -337,14 +337,3 @@
         handleSidebarCollapseTooltip();
     });
 </script>
-<!-- Sidenav End -->
-<!-- 
-Usage:
--->
-<!-- REMOVE the following lines to avoid JS/CSS conflicts -->
-<!-- 
-<link rel="stylesheet"
-    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css?v=<?= time() ?>">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css?v=<?= time() ?>" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js?v=<?= time() ?>"></script>
--->
