@@ -137,14 +137,9 @@
     #sidebarMenu.collapsed+#dashboardContainer,
     #sidebarContainer.collapsed+#dashboardContainer {
         /* fallback if needed */
-        margin-left: 80px;
+        margin-left: 50px;
     }
 
-    #sidebarMenu.collapsed~#dashboardContainer,
-    #sidebarContainer.collapsed~#dashboardContainer {
-        /* fallback if needed */
-        margin-left: 80px;
-    }
 
     #dashboardContainer {
         transition: margin-left 0.3s cubic-bezier(.4, 0, .2, 1);

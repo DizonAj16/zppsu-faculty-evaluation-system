@@ -29,6 +29,8 @@ include __DIR__ . '../../../includes/header-user.php';
         settings: 'admin_settings.php'
     };
 
+    
+
     function showComponent(page) {
         const content = document.getElementById('adminPageContent');
         if (!content || !pageMap[page]) return;
