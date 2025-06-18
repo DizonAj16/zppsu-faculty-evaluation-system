@@ -5,18 +5,18 @@ $user = 'root';
 $pass = '';
 $charset = 'utf8mb4';
 
-// Connect to MySQL server without DB
+// Step 1: Connect without DB to create the DB
 $dsn_no_db = "mysql:host=$host;charset=$charset";
 try {
     $pdo = new PDO($dsn_no_db, $user, $pass, [
         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
     ]);
     $pdo->exec("CREATE DATABASE IF NOT EXISTS `$db` CHARACTER SET $charset COLLATE ${charset}_general_ci");
-} catch (\PDOException $e) {
+} catch (PDOException $e) {
     die("Database creation failed: " . $e->getMessage());
 }
 
-// Connect to the database
+// Step 2: Connect with DB
 $dsn = "mysql:host=$host;dbname=$db;charset=$charset";
 $options = [
     PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
@@ -42,7 +42,7 @@ try {
         $pdo->prepare("INSERT INTO users (username, password, role) VALUES (?, ?, ?)")
             ->execute([
                 'admin',
-                '$2y$10$6yBqW/xtcKIkLHKRsiY6Tun4wEjLOKZf6MPSNsvHwmlctMLkwc61a',
+                '$2y$10$6yBqW/xtcKIkLHKRsiY6Tun4wEjLOKZf6MPSNsvHwmlctMLkwc61a', // hashed 'admin' password
                 'admin'
             ]);
     }
@@ -81,8 +81,6 @@ try {
             ON DELETE CASCADE ON UPDATE CASCADE
     )");
 
-    // Map department_code to department_id
-    $getDeptId = $pdo->prepare("SELECT department_id FROM departments WHERE department_code = ?");
     $programs = [
         ['Bachelor of Science in Information Technology', 'BS INFOTECH', 'CICS'],
         ['Bachelor of Science in Civil Engineering', 'BS CE', 'CET'],
@@ -90,15 +88,18 @@ try {
         ['Bachelor of Science in Information Systems', 'BS INFOSYS', 'CICS']
     ];
 
-    foreach ($programs as $program) {
-        $getDeptId->execute([$program[2]]);
+    $getDeptId = $pdo->prepare("SELECT department_id FROM departments WHERE department_code = ?");
+
+    foreach ($programs as [$programName, $programCode, $deptCode]) {
+        $getDeptId->execute([$deptCode]);
         $deptId = $getDeptId->fetchColumn();
+
         if ($deptId) {
             $stmt = $pdo->prepare("SELECT COUNT(*) FROM programs WHERE program_code = ?");
-            $stmt->execute([$program[1]]);
+            $stmt->execute([$programCode]);
             if ($stmt->fetchColumn() == 0) {
                 $pdo->prepare("INSERT INTO programs (program_name, program_code, department_id) VALUES (?, ?, ?)")
-                    ->execute([$program[0], $program[1], $deptId]);
+                    ->execute([$programName, $programCode, $deptId]);
             }
         }
     }
@@ -107,7 +108,8 @@ try {
     $pdo->exec("CREATE TABLE IF NOT EXISTS subjects (
         subject_id INT AUTO_INCREMENT PRIMARY KEY,
         subject_name VARCHAR(100) NOT NULL,
-        subject_code VARCHAR(20) NOT NULL UNIQUE,
+        subject_code VARCHAR(20) NOT NULL,
+        subject_type ENUM('Major', 'Minor') NOT NULL DEFAULT 'Major',
         program_id INT,
         department_id INT,
         FOREIGN KEY (program_id) REFERENCES programs(program_id)
@@ -116,31 +118,37 @@ try {
             ON DELETE SET NULL ON UPDATE CASCADE
     )");
 
-    // Map program_code and department_code to their IDs
-    $getProgramId = $pdo->prepare("SELECT program_id FROM programs WHERE program_code = ?");
     $subjects = [
-        ['INTERNET OF THINGS', 'ITDC 1', 'BS INFOTECH', 'CICS'],
-        ['COMPUTER PROGRAMMING 1', 'ITCC 102', 'BS INFOTECH', 'CICS'],
-        ['DATA STRUCTURES AND ALGORITHMS', 'ITPC 102', 'BS INFOTECH', 'CICS']
+        ['INTERNET OF THINGS', 'ITDC 1', 'BS INFOTECH', 'CICS', 'Major'],
+        ['COMPUTER PROGRAMMING 1', 'ITCC 102', 'BS INFOTECH', 'CICS', 'Major'],
+        ['DATA STRUCTURES AND ALGORITHMS', 'ITPC 102', 'BS INFOTECH', 'CICS', 'Major'],
+        ['ETHICS', 'GE 119', 'BS INFOTECH', 'CICS', 'Minor'],
+        ['Life, Writings and Works of Rizal', 'Rizal', 'BS INFOTECH', 'CICS', 'Minor']
     ];
 
-    foreach ($subjects as $subject) {
-        $getProgramId->execute([$subject[2]]);
+    $getProgramId = $pdo->prepare("SELECT program_id FROM programs WHERE program_code = ?");
+    $checkSubject = $pdo->prepare("SELECT COUNT(*) FROM subjects WHERE subject_code = ?");
+    $insertSubject = $pdo->prepare("
+        INSERT INTO subjects (subject_name, subject_code, program_id, department_id, subject_type)
+        VALUES (?, ?, ?, ?, ?)
+    ");
+
+    foreach ($subjects as [$subName, $subCode, $progCode, $deptCode, $subType]) {
+        $getProgramId->execute([$progCode]);
         $programId = $getProgramId->fetchColumn();
 
-        $getDeptId->execute([$subject[3]]);
+        $getDeptId->execute([$deptCode]);
         $deptId = $getDeptId->fetchColumn();
 
         if ($programId && $deptId) {
-            $stmt = $pdo->prepare("SELECT COUNT(*) FROM subjects WHERE subject_code = ?");
-            $stmt->execute([$subject[1]]);
-            if ($stmt->fetchColumn() == 0) {
-                $pdo->prepare("INSERT INTO subjects (subject_name, subject_code, program_id, department_id) VALUES (?, ?, ?, ?)")
-                    ->execute([$subject[0], $subject[1], $programId, $deptId]);
+            $checkSubject->execute([$subCode]);
+            if ($checkSubject->fetchColumn() == 0) {
+                $insertSubject->execute([$subName, $subCode, $programId, $deptId, $subType]);
             }
         }
     }
 
-} catch (\PDOException $e) {
-    die("DB setup failed: " . $e->getMessage());
+
+} catch (PDOException $e) {
+    die("❌ DB setup failed: " . $e->getMessage());
 }

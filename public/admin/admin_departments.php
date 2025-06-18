@@ -1,24 +1,38 @@
 <div class="p-4">
-    <?php if (isset($_GET['added'])): ?>
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            Department added successfully!
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    <?php endif; ?>
+    <div class="toast-container position-absolute top-0 end-0 p-3">
+        <?php if (isset($_GET['added'])): ?>
+            <div id="addedToast" class="toast align-items-center text-white bg-success border-0" role="alert">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        Subject added successfully!
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                </div>
+            </div>
+        <?php endif; ?>
 
-    <?php if (isset($_GET['edited'])): ?>
-        <div class="alert alert-info alert-dismissible fade show" role="alert">
-            Department updated successfully!
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    <?php endif; ?>
+        <?php if (isset($_GET['deleted'])): ?>
+            <div id="deletedToast" class="toast align-items-center text-white bg-danger border-0" role="alert">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        Subject deleted successfully!
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                </div>
+            </div>
+        <?php endif; ?>
 
-    <?php if (isset($_GET['deleted'])): ?>
-        <div class="alert alert-warning alert-dismissible fade show" role="alert">
-            Department deleted successfully!
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    <?php endif; ?>
+        <?php if (isset($_GET['edited'])): ?>
+            <div id="editedToast" class="toast align-items-center text-white bg-info border-0" role="alert">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        Subject updated successfully!
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                </div>
+            </div>
+        <?php endif; ?>
+    </div>
 
     <h2 class="mb-4">Departments Management</h2>
     <div class="card shadow-sm mb-4">
@@ -31,13 +45,21 @@
                             <th>#</th>
                             <th>Department Name</th>
                             <th>Department Code</th>
+                            <th>Total Subjects</th>
                             <th class="text-center">Actions</th>
                         </tr>
                     </thead>
+
                     <tbody>
                         <?php
                         require_once '../../config/db.php';
-                        $stmt = $pdo->query("SELECT * FROM departments ORDER BY department_name ASC");
+                        $stmt = $pdo->query("
+    SELECT d.*, COUNT(s.subject_id) AS total_subjects
+    FROM departments d
+    LEFT JOIN subjects s ON d.department_id = s.department_id
+    GROUP BY d.department_id
+    ORDER BY d.department_name ASC
+");
                         $count = 1;
                         $deparments = $stmt->fetchAll();
 
@@ -48,6 +70,7 @@
                                     <td><?= $count++; ?></td>
                                     <td><?= htmlspecialchars($row['department_name']) ?></td>
                                     <td><?= htmlspecialchars($row['department_code']) ?></td>
+                                    <td><?= $row['total_subjects'] ?></td>
                                     <td class="text-center">
                                         <button class="btn btn-sm btn-primary me-1" data-bs-toggle="modal"
                                             data-bs-target="#editDepartmentModal"

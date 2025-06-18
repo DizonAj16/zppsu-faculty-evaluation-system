@@ -1,24 +1,43 @@
 <div class="p-4">
-    <?php if (isset($_GET['added'])): ?>
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            Program added successfully!
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    <?php endif; ?>
+    <div class="toast-container position-fixed top-0 end-0 p-3">
+        <?php if (isset($_GET['added'])): ?>
+            <div id="addedToast" class="toast align-items-center text-bg-success border-0" role="alert"
+                aria-live="assertive" aria-atomic="true">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        Program added successfully!
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                </div>
+            </div>
+        <?php endif; ?>
 
-    <?php if (isset($_GET['deleted'])): ?>
-        <div class="alert alert-warning alert-dismissible fade show" role="alert">
-            Program deleted successfully!
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    <?php endif; ?>
+        <?php if (isset($_GET['deleted'])): ?>
+            <div id="deletedToast" class="toast align-items-center text-bg-danger border-0" role="alert"
+                aria-live="assertive" aria-atomic="true">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        Program deleted successfully!
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                </div>
+            </div>
+        <?php endif; ?>
 
-    <?php if (isset($_GET['edited'])): ?>
-        <div class="alert alert-info alert-dismissible fade show" role="alert">
-            Program updated successfully!
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    <?php endif; ?>
+        <?php if (isset($_GET['edited'])): ?>
+            <div id="editedToast" class="toast align-items-center text-bg-primary border-0" role="alert"
+                aria-live="assertive" aria-atomic="true">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        Program edited successfully!
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                </div>
+            </div>
+        <?php endif; ?>
+    </div>
+
+
 
 
 
@@ -58,27 +77,27 @@
                         if (count($progams) > 0):
                             foreach ($progams as $row):
                                 ?>
-                            <tr>
-                                <td><?= $count++; ?></td>
-                                <td><?= htmlspecialchars($row['program_name']) ?></td>
-                                <td><?= htmlspecialchars($row['program_code']) ?></td>
-                                <td><?= htmlspecialchars($row['department_code']) ?></td>
-                                <td class="text-center">
-                                    <button class="btn btn-sm btn-primary me-1" data-bs-toggle="modal"
-                                        data-bs-target="#editProgramModal" data-program-id="<?= $row['program_id'] ?>"
-                                        data-program-name="<?= htmlspecialchars($row['program_name']) ?>"
-                                        data-program-code="<?= htmlspecialchars($row['program_code']) ?>"
-                                        data-department-id="<?= $row['department_id'] ?>">
-                                        <i class="bi bi-pencil"></i> Edit
-                                    </button>
-                                    <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal"
-                                        data-bs-target="#confirmDeleteModalProgram"
-                                        data-program-id="<?= $row['program_id'] ?>">
-                                        <i class="bi bi-trash"></i> Delete
-                                    </button>
-                                </td>
-                            </tr>
-                        <?php
+                                <tr>
+                                    <td><?= $count++; ?></td>
+                                    <td><?= htmlspecialchars($row['program_name']) ?></td>
+                                    <td><?= htmlspecialchars($row['program_code']) ?></td>
+                                    <td><?= htmlspecialchars($row['department_code']) ?></td>
+                                    <td class="text-center">
+                                        <button class="btn btn-sm btn-primary me-1" data-bs-toggle="modal"
+                                            data-bs-target="#editProgramModal" data-program-id="<?= $row['program_id'] ?>"
+                                            data-program-name="<?= htmlspecialchars($row['program_name']) ?>"
+                                            data-program-code="<?= htmlspecialchars($row['program_code']) ?>"
+                                            data-department-id="<?= $row['department_id'] ?>">
+                                            <i class="bi bi-pencil"></i> Edit
+                                        </button>
+                                        <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal"
+                                            data-bs-target="#confirmDeleteModalProgram"
+                                            data-program-id="<?= $row['program_id'] ?>">
+                                            <i class="bi bi-trash"></i> Delete
+                                        </button>
+                                    </td>
+                                </tr>
+                                <?php
                             endforeach;
                         else:
                             ?>

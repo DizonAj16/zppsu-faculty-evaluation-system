@@ -1,24 +1,38 @@
 <div class="p-4">
-    <?php if (isset($_GET['added'])): ?>
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            Subject added successfully!
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    <?php endif; ?>
+    <div class="toast-container position-absolute top-0 end-0 p-3">
+        <?php if (isset($_GET['added'])): ?>
+            <div id="addedToast" class="toast align-items-center text-white bg-success border-0" role="alert">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        Subject added successfully!
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                </div>
+            </div>
+        <?php endif; ?>
 
-    <?php if (isset($_GET['deleted'])): ?>
-        <div class="alert alert-warning alert-dismissible fade show" role="alert">
-            Subject deleted successfully!
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    <?php endif; ?>
+        <?php if (isset($_GET['deleted'])): ?>
+            <div id="deletedToast" class="toast align-items-center text-white bg-danger border-0" role="alert">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        Subject deleted successfully!
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                </div>
+            </div>
+        <?php endif; ?>
 
-    <?php if (isset($_GET['edited'])): ?>
-        <div class="alert alert-info alert-dismissible fade show" role="alert">
-            Subject updated successfully!
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    <?php endif; ?>
+        <?php if (isset($_GET['edited'])): ?>
+            <div id="editedToast" class="toast align-items-center text-white bg-info border-0" role="alert">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        Subject updated successfully!
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                </div>
+            </div>
+        <?php endif; ?>
+    </div>
 
 
 
@@ -36,6 +50,7 @@
                             <th>Code</th>
                             <th>Program</th>
                             <th>Department</th>
+                            <th>Subject type</th>
                             <th class="text-center">Actions</th>
                         </tr>
                     </thead>
@@ -50,7 +65,8 @@
             s.subject_name, 
             s.subject_code, 
             s.program_id,             
-            s.department_id,          
+            s.department_id,
+            s.subject_type,          
             d.department_name,
             d.department_code, 
             p.program_name
@@ -72,13 +88,15 @@
                                     <td><?= htmlspecialchars($row['subject_code']) ?></td>
                                     <td><?= htmlspecialchars($row['program_name']) ?></td>
                                     <td><?= htmlspecialchars($row['department_code']) ?></td>
+                                    <td><?= htmlspecialchars($row['subject_type']) ?></td>
                                     <td class="text-center">
                                         <button class="btn btn-sm btn-primary me-1" data-bs-toggle="modal"
                                             data-bs-target="#editSubjectModal" data-subject-id="<?= $row['subject_id'] ?>"
                                             data-subject-name="<?= htmlspecialchars($row['subject_name']) ?>"
                                             data-subject-code="<?= htmlspecialchars($row['subject_code']) ?>"
                                             data-program-id="<?= $row['program_id'] ?>"
-                                            data-department-id="<?= $row['department_id'] ?>">
+                                            data-department-id="<?= $row['department_id'] ?>"
+                                            data-subject-type="<?= htmlspecialchars($row['subject_type']) ?>">
                                             <i class="bi bi-pencil"></i> Edit
                                         </button>
 
@@ -110,7 +128,7 @@
             Add Subject
         </button>
 
-        <!-- Modal -->
+        <!-- add Modal -->
         <div class="modal fade" id="addSubjectModal" tabindex="-1" aria-labelledby="exampleModalLabel"
             aria-hidden="true">
             <div class="modal-dialog modal-dialog-scrollable">
@@ -160,11 +178,25 @@
                                 ?>
                             </select>
                         </div>
-                    </div>
 
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-success">Add Subject</button>
-                    </div>
+                        <!-- Subject Type -->
+                        <div class="mb-3">
+                            <label for="subjectType" class="form-label">Subject Type</label>
+                            <select id="subjectType" name="subject_type" class="form-select" required>
+                                <option value="">-- Select Subject Type --</option>
+                                <?php
+                                // Fetch unique subject types only
+                                $stmt = $pdo->query("SELECT DISTINCT subject_type FROM subjects ORDER BY subject_type ASC");
+                                while ($row = $stmt->fetch()) {
+                                    echo "<option value='" . htmlspecialchars($row['subject_type']) . "'>" . htmlspecialchars($row['subject_type']) . "</option>";
+                                }
+                                ?>
+                            </select>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-success">Add Subject</button>
+                        </div>
                 </form>
             </div>
         </div>
@@ -240,11 +272,25 @@
                             ?>
                         </select>
                     </div>
-                </div>
 
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Update Subject</button>
-                </div>
+                    <div class="mb-3">
+                        <label for="editSubjectType" class="form-label">Subject Type</label>
+                        <select class="form-select" name="subject_type" data-edit-field="subject-type" required>
+                            <option value="">-- Select Subject Type --</option>
+                            <?php
+                            // Fetch unique subject types only
+                            $stmt = $pdo->query("SELECT DISTINCT subject_type FROM subjects ORDER BY subject_type ASC");
+                            while ($row = $stmt->fetch()) {
+                                echo "<option value='" . htmlspecialchars($row['subject_type']) . "'>" . htmlspecialchars($row['subject_type']) . "</option>";
+                            }
+                            ?>
+                        </select>
+                    </div>
+
+
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Update Subject</button>
+                    </div>
             </form>
         </div>
     </div>

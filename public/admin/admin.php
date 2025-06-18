@@ -29,7 +29,6 @@ include __DIR__ . '../../../includes/header-user.php';
         settings: 'admin_settings.php'
     };
 
-    
 
     function showComponent(page) {
         const content = document.getElementById('adminPageContent');
@@ -67,6 +66,19 @@ include __DIR__ . '../../../includes/header-user.php';
 
                 // ✅ Rebind all generic edit modals
                 bindEditModals();
+
+                const toastIds = ['addedToast', 'deletedToast', 'editedToast'];
+
+                toastIds.forEach(id => {
+                    const toastEl = document.getElementById(id);
+                    if (toastEl) {
+                        const toast = new bootstrap.Toast(toastEl, {
+                            delay: 2000,
+                            autohide: true
+                        });
+                        toast.show();
+                    }
+                });
             });
 
         if (hasAdded || hasDeleted || hasEdited) {
@@ -116,7 +128,7 @@ include __DIR__ . '../../../includes/header-user.php';
 
 
     document.addEventListener('DOMContentLoaded', function () {
-        // Handle sidenav clicks
+        // 📁 Handle sidebar nav clicks
         document.querySelectorAll('#sidebarMenu .nav-link').forEach(link => {
             link.addEventListener('click', function (e) {
                 e.preventDefault();
@@ -127,18 +139,19 @@ include __DIR__ . '../../../includes/header-user.php';
             });
         });
 
-        // Load component on first load
+        // 🚀 Load initial page
         const params = new URLSearchParams(window.location.search);
         const pageParam = params.get('page') || 'dashboard';
         showComponent(pageParam);
 
-        // Set active nav
+        // 🧭 Highlight current nav
         document.querySelectorAll('#sidebarMenu .nav-link').forEach(link => {
             if (link.getAttribute('data-page') === pageParam) {
                 link.classList.add('active');
             }
         });
     });
+
 
     // ✅ Respond to browser back/forward button
     window.addEventListener('popstate', () => {
