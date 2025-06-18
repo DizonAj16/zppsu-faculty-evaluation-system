@@ -37,6 +37,8 @@ include __DIR__ . '../../../includes/header-user.php';
         const params = new URLSearchParams(window.location.search);
         let fetchUrl = pageMap[page];
 
+        // Preserve limit and status indicators
+        const limit = params.get('limit');
         const hasAdded = params.has('added');
         const hasDeleted = params.has('deleted');
         const hasEdited = params.has('edited');
@@ -81,6 +83,7 @@ include __DIR__ . '../../../includes/header-user.php';
                 });
             });
 
+        // Clean up the URL after showing toast
         if (hasAdded || hasDeleted || hasEdited) {
             setTimeout(() => {
                 params.delete('added');
@@ -165,6 +168,7 @@ include __DIR__ . '../../../includes/header-user.php';
     });
 
 </script>
+
 
 
 <?php include __DIR__ . '../../../includes/footer-user.php'; ?>

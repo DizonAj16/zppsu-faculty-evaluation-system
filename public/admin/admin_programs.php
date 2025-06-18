@@ -46,7 +46,7 @@
         <div class="card-body">
             <h5 class="card-title">Programs List</h5>
             <div class="table-responsive">
-                <table class="table table-bordered table-hover align-middle mb-0">
+                <table class="table table-striped table-bordered table-hover align-middle mb-0">
                     <thead class="table-light">
                         <tr>
                             <th>#</th>
