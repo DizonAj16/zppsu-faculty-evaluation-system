@@ -43,7 +43,6 @@ include __DIR__ . '../../../includes/header-user.php';
         programs: 'admin_programs.php',
         subjects: 'admin_subjects.php',
         departments: 'admin_departments.php',
-        'academic-year': 'admin_academic_year.php',
         'year-section': 'admin_year_section.php',
         'faculty-evaluation': 'admin_faculty_evaluation.php',
         settings: 'admin_settings.php'

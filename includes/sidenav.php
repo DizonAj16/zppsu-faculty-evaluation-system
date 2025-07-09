@@ -200,10 +200,7 @@
                 <a class="nav-link" href="#" data-page="departments" data-bs-toggle="tooltip" data-bs-placement="top"
                     title="Departments"><i class="bi bi-building me-2"></i><span>Departments</span></a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#" data-page="academic-year" data-bs-toggle="tooltip" data-bs-placement="top"
-                    title="Academic Year"><i class="bi bi-calendar3 me-2"></i><span>Academic Year</span></a>
-            </li>
+
             <li class="nav-item">
                 <a class="nav-link" href="#" data-page="year-section" data-bs-toggle="tooltip" data-bs-placement="top"
                     title="Year and Section"><i class="bi bi-collection me-2"></i><span>Year and Section</span></a>
