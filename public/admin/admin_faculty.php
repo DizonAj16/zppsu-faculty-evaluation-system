@@ -26,7 +26,11 @@
                         <div class="buttons mt-3">
                             <button class="btn btn-sm btn-success">Edit</button>
                             <button class="btn btn-sm btn-primary">View</button>
-                            <button class="btn btn-sm btn-danger">Delete</button>
+                            <form action="functions/auth.php" onsubmit="return confirm('Are you sure you want to delete this faculty?')" method="post">
+                                <input type="hidden" name="faculty_id" value="<?= $fuck['id'] ?>">
+                                <input type="hidden" name="deleteFaculty" value="true">
+                                <button class="btn btn-sm btn-danger">Delete</button>
+                            </form>
                         </div>
                     </div>
                 <?php endforeach ?>
