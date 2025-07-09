@@ -1,7 +1,7 @@
 <!-- Sidenav Start -->
 <style>
     #sidebarMenu {
-        min-height: 100vh;
+        height: 100%;
         width: 250px;
         transition: left 0.3s, width 0.3s;
         background: #800000 !important;

@@ -1,15 +1,19 @@
 <div class="p-4">
     <div class="toast-container position-absolute top-0 end-0 p-3">
-        <?php if (isset($_GET['added'])): ?>
-            <div id="addedToast" class="toast align-items-center text-white bg-success border-0" role="alert">
+        <?php 
+        // if (isset($_GET['added'])):
+         ?>
+            <!-- <div id="addedToast" class="toast align-items-center text-white bg-success border-0" role="alert">
                 <div class="d-flex">
                     <div class="toast-body">
                         Subject added successfully!
                     </div>
                     <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
                 </div>
-            </div>
-        <?php endif; ?>
+            </div> -->
+        <?php 
+    // endif;
+     ?>
 
         <?php if (isset($_GET['deleted'])): ?>
             <div id="deletedToast" class="toast align-items-center text-white bg-danger border-0" role="alert">
