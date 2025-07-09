@@ -161,7 +161,7 @@ try {
     // =================== FACULTY TABLE ===================== //
     $pdo->exec("CREATE TABLE IF NOT EXISTS faculty (
         id INT AUTO_INCREMENT PRIMARY KEY,
-        user_profile BLOB,
+        user_profile VARCHAR(255),
         faculty_id VARCHAR(10) NOT NULL,
         fulname VARCHAR(255) NOT NULL,
         subjectCount INT NOT NULL,

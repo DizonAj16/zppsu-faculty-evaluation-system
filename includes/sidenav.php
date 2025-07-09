@@ -152,7 +152,6 @@
         width: 80px !important;
     }
 
-    /* Responsive: match collapsed width on mobile */
     @media (max-width: 991.98px) {
         #sidebarContainer {
             width: 0 !important;
@@ -173,7 +172,6 @@
 <nav id="sidebarMenu" class="border-end d-lg-block">
     <div class="p-3 d-flex flex-column h-100">
         <div class="d-flex align-items-center mb-4">
-            <!-- Optionally add logo here if needed -->
             <button class="btn btn-link ms-auto d-none d-lg-inline p-0" id="sidebarCollapseBtn"
                 style="font-size:1.2rem;" data-bs-toggle="tooltip" data-bs-placement="top" title="Collapse sidebar">
                 <i class="bi bi-chevron-left" id="collapseIcon"></i>
