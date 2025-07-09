@@ -13,3 +13,6 @@ function previewImage(event) {
             console.log("No file selected");
         }
 }
+  function setDeleteJobId(id) {
+        document.getElementById('deleteJobId').value = id;
+    }

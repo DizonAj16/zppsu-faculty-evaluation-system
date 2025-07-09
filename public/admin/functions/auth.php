@@ -78,17 +78,20 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             } catch (PDOException $e) {
                 die("query failed: " . $e->getMessage());
             }
+    }elseif (isset($_POST['deleteFaculty']) && $_POST["deleteFaculty"] === "true") {
+       echo $id = $_POST['faculty_id'] ?? 'Helo?';
+        if(!$id){
+            header("Location: ../admin.php?page=faculty&failed=1");
+            exit;
+        }
+        try {
+            $stmt = $pdo->prepare("DELETE FROM faculty WHERE id = ?");
+            $stmt->execute([$id]);
+            header("Location: ../admin.php?page=faculty&deleted=1");
+            exit;
+        } catch (PDOException $e) {
+            die("❌ Delete failed: " . $e->getMessage());
+        }
+    
     }
-    if (isset($_POST['deleteFaculty']) && $_POST["deleteFaculty"] == "true") {
-    $id = $_POST['faculty_id'];
-    try {
-        $stmt = $pdo->prepare("DELETE FROM faculty WHERE id = ?");
-        $stmt->execute([$id]);
-        header("Location: ../admin.php?page=faculty&deleted=1");
-        exit;
-    } catch (PDOException $e) {
-        die("❌ Delete failed: " . $e->getMessage());
-    }
-}
-
 }
