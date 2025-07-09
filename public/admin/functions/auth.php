@@ -61,13 +61,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             }
             try { 
                 echo $faculty_id;
-                $query = "INSERT INTO faculty (faculty_id, fulname, department, email, position, subject_id, user_profile
+                $query = "INSERT INTO faculty (faculty_id, fulname, DEPTid, email, position, subject_id, user_profile
                 ) VALUES (
-                :faculty_id, :fulname, :department, :email, :position, :subject_id, :user_profile);";
+                :faculty_id, :fulname, :DEPTid, :email, :position, :subject_id, :user_profile);";
                 $stmt = $pdo->prepare($query);
                 $stmt->bindParam(":faculty_id", $faculty_id);
                 $stmt->bindParam(":fulname", $fullname);
-                $stmt->bindParam(":department", $department);
+                $stmt->bindParam(":DEPTid", $department);
                 $stmt->bindParam(":email", $email);
                 $stmt->bindParam(":position", $position);
                 $stmt->bindParam(":subject_id", $subject_id);

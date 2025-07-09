@@ -13,17 +13,24 @@
 <div class="p-4">
     <h2 class="mb-4">Faculty Management</h2>
     <div class="card shadow-sm mb-4">
-        <div class="card-body">
+        <div class="card-body" style="height: 70vh; overflow-y: auto;">
             <h5 class="card-title">Faculty List</h5>
-            <div class="flex-box d-flex flex-flex col-md-6 h-auto p-3">
-                <?php foreach($faculty as $fuck) : ?>
-                    <div class="profile w-100 d-flex flex-column justify-content-center align-items-center m-0 p-0">
+            <div class="flex-box d-flex flex-row col-md-12 h-auto p-3 gap-2 flex-wrap">
+                    <?php foreach($faculty as $fuck) : ?>
+                    <div class="profile d-flex flex-column justify-content-center align-items-center m-0 p-3 shadow rounded-3 col-md-3" style="background-color: #800000; color: #fff;">
                         <img src="../../assets/upload/<?= $fuck["user_profile"]  ?? 'helllo?'?>" alt="" style="width: 100px; height: 100px; border-radius: 50%;">
-                        <label for=""><?= $fuck["faculty_id"] ?? 'feeling special ka boi?' ?></label>
-                        <label for=""><?= $fuck["fulname"] ?></label>
-                        <label for=""><?= $fuck["subject_name"] ?? "hehe" ?></label>
+                        <label for="" class=""><?= $fuck["faculty_id"] ?? 'feeling special ka boi?' ?></label>
+                        <label for="" class="fw-bold"><?= $fuck["fulname"] ?></label>
+                        <label for="" class="text-center my-1" style="font-size: 13px;"><?= $fuck["department_name"] ?? "wala" ?></label>
+                        <label for="" style="font-size: 13px;"><?= $fuck["subject_name"] ?? "hehe" ?></label>
+                        <div class="buttons mt-3">
+                            <button class="btn btn-sm btn-success">Edit</button>
+                            <button class="btn btn-sm btn-primary">View</button>
+                            <button class="btn btn-sm btn-danger">Delete</button>
+                        </div>
                     </div>
                 <?php endforeach ?>
+           
             </div>
         </div>
     </div>
@@ -53,13 +60,13 @@
                     <div class="row g-3  d-flex flex-column">
                         <div class="d-flex flex-row col-md-12 gap-1 justify-content-between">
                             <div class="col-md-6">
-                                <label class="form-label" for="faculty_id">Faculty ID</label>
+                                <label class="form-label" for="faculty_id">Faculty ID</label>
                                 <input type="text" class="form-control" id="faculty_id"
                                         name="faculty_id" maxlength="10" required>
                             </div>
 
                             <div class="col-md-6">
-                                <label class="form-label" for="fullname">Full Name</label>
+                                <label class="form-label" for="fullname">Full Name</label>
                                 <input type="text" class="form-control" id="fullname"
                                         name="fullname" required>
                             </div>

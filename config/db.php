@@ -156,10 +156,12 @@ try {
         fulname VARCHAR(255) NOT NULL,
         subjectCount INT NOT NULL,
         subject_id INT ,
-        department VARCHAR(200),
+        DEPTid INT,
         email VARCHAR(255) NOT NULL,
         position VARCHAR(20) NOT NULL,
         FOREIGN KEY (subject_id) REFERENCES subjects(subject_id)
+            ON DELETE SET NULL ON UPDATE CASCADE,
+        FOREIGN KEY (DEPTid) REFERENCES departments(department_id)
             ON DELETE SET NULL ON UPDATE CASCADE
     )");
 

@@ -32,9 +32,10 @@ return ['departments' => $departments];
 function faculty(){
         global $pdo;
 $stmt = $pdo->query("
-    SELECT faculty.faculty_id, subjects.*, faculty.*
+    SELECT faculty.faculty_id, subjects.*, faculty.*, departments.department_name
     FROM faculty
     LEFT JOIN subjects ON faculty.subject_id = subjects.subject_id 
+    LEFT JOIN departments ON faculty.DEPTid = departments.department_id 
     ORDER BY fulname
 ");
 $faculty = $stmt->fetchAll(PDO::FETCH_ASSOC);
