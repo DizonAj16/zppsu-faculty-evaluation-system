@@ -14,8 +14,28 @@ include __DIR__ . '../../../includes/header-user.php';
     </div>
 </div>
 
-
 <script>
+    
+    document.addEventListener('DOMContentLoaded', () => {
+        if (added) {
+            console.log("Showing updateReq toast");
+            Swal.fire({
+            toast: true,
+            position: 'top-end',
+            icon: 'success',
+            title: 'Subject added successfully!.',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            customClass: { popup: 'swal2-row-toast' }
+            });
+            removeUrlParams(['added']);
+        }function removeUrlParams(params) {
+            const url = new URL(window.location);
+            params.forEach(param => url.searchParams.delete(param));
+            window.history.replaceState({}, document.title, url.toString());
+        }
+    });
     // Move pageMap and showComponent OUTSIDE so they can be shared
     const pageMap = {
         dashboard: 'admin_dashboard.php',
@@ -169,7 +189,5 @@ include __DIR__ . '../../../includes/header-user.php';
     });
 
 </script>
-
-
 
 <?php include __DIR__ . '../../../includes/footer-user.php'; ?>

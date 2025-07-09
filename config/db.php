@@ -158,6 +158,20 @@ try {
         }
     }
 
+    // =================== FACULTY TABLE ===================== //
+    $pdo->exec("CREATE TABLE IF NOT EXISTS faculty (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        user_profile BLOB,
+        faculty_id VARCHAR(10) NOT NULL,
+        fulname VARCHAR(255) NOT NULL,
+        subjectCount INT NOT NULL,
+        subject_id INT ,
+        department VARCHAR(200),
+        email VARCHAR(255) NOT NULL,
+        position VARCHAR(20) NOT NULL,
+        FOREIGN KEY (subject_id) REFERENCES subjects(subject_id)
+            ON DELETE SET NULL ON UPDATE CASCADE
+    )");
 
 } catch (PDOException $e) {
     die("❌ DB setup failed: " . $e->getMessage());
