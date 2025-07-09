@@ -71,6 +71,16 @@ try {
         }
     }
 
+    // ✅ YEAR_SECTIONS table
+    $pdo->exec("CREATE TABLE IF NOT EXISTS year_sections (
+    year_section_id INT AUTO_INCREMENT PRIMARY KEY,
+    year VARCHAR(50) NOT NULL,
+    section VARCHAR(50) NOT NULL,
+    program_id INT NOT NULL,
+    FOREIGN KEY (program_id) REFERENCES programs(program_id)
+        ON DELETE CASCADE ON UPDATE CASCADE
+)");
+
     // PROGRAMS table
     $pdo->exec("CREATE TABLE IF NOT EXISTS programs (
         program_id INT AUTO_INCREMENT PRIMARY KEY,

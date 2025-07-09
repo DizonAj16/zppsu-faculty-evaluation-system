@@ -65,6 +65,7 @@ include __DIR__ . '../../../includes/header-user.php';
                 bindDeleteModal('confirmDeleteModalSubject', 'confirmDeleteBtnSubject', 'data-subject-id', '../admin/processes/process_delete_subject.php');
                 bindDeleteModal('confirmDeleteModalProgram', 'confirmDeleteBtnProgram', 'data-program-id', '../admin/processes/process_delete_program.php');
                 bindDeleteModal('confirmDeleteModalDepartment', 'confirmDeleteBtnDepartment', 'data-department-id', '../admin/processes/process_delete_department.php');
+                bindDeleteModal('confirmDeleteModalYearSection', 'confirmDeleteBtnYearSection', 'data-year-section-id', '../admin/processes/process_delete_year_section.php');
 
                 // ✅ Rebind all generic edit modals
                 bindEditModals();
