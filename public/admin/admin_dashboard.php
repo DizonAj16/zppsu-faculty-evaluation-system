@@ -2,7 +2,7 @@
 require_once '../../config/db.php';
 
 // Get counts
-$facultyCount = $pdo->query("SELECT COUNT(*) AS total FROM users WHERE role = 'faculty'")->fetch()['total'];
+$facultyCount = $pdo->query("SELECT COUNT(*) AS total FROM faculty")->fetch()['total'];
 $subjectCount = $pdo->query("SELECT COUNT(*) AS total FROM subjects")->fetch()['total'];
 $departmentCount = $pdo->query("SELECT COUNT(*) AS total FROM departments")->fetch()['total'];
 $programCount = $pdo->query("SELECT COUNT(*) AS total FROM programs")->fetch()['total'];
