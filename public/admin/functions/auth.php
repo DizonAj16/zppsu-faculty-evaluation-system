@@ -93,5 +93,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             die("❌ Delete failed: " . $e->getMessage());
         }
     
-    }
+    }elseif(isset($_POST["EditFaculty"]) && $_POST["EditFaculty"] === "true"){
+        echo $faculty_id = $_POST["editJobId"] ?? 'sdljfgbsjhdfg';
+    }   
 }

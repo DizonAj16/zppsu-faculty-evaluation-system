@@ -24,34 +24,50 @@
                         <label for="" class="text-center my-1" style="font-size: 13px;"><?= $fuck["department_name"] ?? "wala" ?></label>
                         <label for="" style="font-size: 13px;"><?= $fuck["subject_name"] ?? "hehe" ?></label>
                         <div class="buttons mt-3 d-flex w-100 justify-content-evenly">
-                            <button class="btn btn-sm btn-success">Edit</button>
+                           <button type="button"
+                                    class="btn btn-sm btn-success edit-btn"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#editJobModal"
+                                    data-id=<?= $fuck["faculty_id"] ?>               
+                                    data-title="Senior Lecturer">
+                                Edit
+                            </button>
                             <button class="btn btn-sm btn-primary">View</button>
                              <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteJobModal" onclick="setDeleteJobId(<?= $fuck['id'] ?>)">Delete</button>
                         </div>
                     </div>
                 <?php endforeach ?>
                         <!-- ====================== EDIT MODAL ============================== -->
-                    <!-- <div class="modal fade" id="editJobModal" tabindex="-1" aria-labelledby="editJobModalLabel" aria-hidden="true">
+                    <div class="modal fade" id="editJobModal" tabindex="-1"
+                            aria-labelledby="editJobModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
-                            <form method="POST" action="functions/auth.php" class="modal-content">
+                            <div class="modal-content">      
+                            <form method="POST" action="functions/auth.php">
                                 <input type="hidden" name="EditFaculty" value="true">
-                            <div class="modal-header">
+
+                                <div class="modal-header">
                                 <h5 class="modal-title" id="editJobModalLabel">Edit Job Title</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+
+                                <div class="modal-body">
                                 <input type="hidden" name="editJobId" id="editJobId">
                                 <div class="mb-3">
-                                <label for="editJobTitle" class="form-label">Job Title</label>
-                                <input type="text" class="form-control" id="editJobTitle" name="editJobTitle" required>
+                                    <label for="editJobTitle" class="form-label">Job Title</label>
+                                    <input type="text" class="form-control" id="editJobTitle"
+                                        name="editJobTitle" required>
                                 </div>
+                                </div>
+
+                                <div class="modal-footer">        <!-- typo fixed -->
+                                <button type="submit" name="updateJob"
+                                        class="btn btn-primary">Save Changes</button>
+                                </div>
+                            </form>
                             </div>
-                            <div class="modsal-footer">
-                                <button type="submit" name="updateJob" class="btn btn-primary">Save Changes</button>
                         </div>
-                        </form>
-                    </div>
-                </div> -->
+                        </div>
 
                   <!-- ==================== DELETE MODAL ===================== -->
            <div class="modal fade" id="deleteJobModal" tabindex="-1" aria-labelledby="deleteJobModalLabel" aria-hidden="true">
