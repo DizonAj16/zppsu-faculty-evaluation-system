@@ -24,52 +24,115 @@
                         <label for="" class="text-center my-1" style="font-size: 13px;"><?= $fuck["department_name"] ?? "wala" ?></label>
                         <label for="" style="font-size: 13px;"><?= $fuck["subject_name"] ?? "hehe" ?></label>
                         <div class="buttons mt-3 d-flex w-100 justify-content-evenly">
-                           <button type="button"
-                                    class="btn btn-sm btn-success edit-btn"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#editJobModal"
-                                    data-id=<?= $fuck["faculty_id"] ?>               
-                                    data-title="Senior Lecturer">
-                                Edit
-                            </button>
-                            <button class="btn btn-sm btn-primary">View</button>
+                           <button class="btn btn-sm btn-success"
+        data-bs-toggle="modal"                
+        data-bs-target="#editJobModal"
+        onclick='editFaculty(
+            <?= (int)$fuck["id"] ?>,
+            <?= json_encode($fuck["faculty_id"]) ?>,
+            <?= json_encode($fuck["fulname"]) ?>,
+            <?= json_encode($fuck["email"]) ?>,
+            <?= json_encode($fuck["position"]) ?>,
+            <?= json_encode($fuck["subject_id"]) ?>,
+            <?= json_encode($fuck["DEPTid"]) ?>,
+            <?= json_encode($fuck["user_profile"] ?? "") ?>
+        )'>
+    Edit
+</button>
+
+
+                            <a href="" class="btn btn-sm btn-primary">View</a>
                              <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteJobModal" onclick="setDeleteJobId(<?= $fuck['id'] ?>)">Delete</button>
                         </div>
                     </div>
                 <?php endforeach ?>
-                        <!-- ====================== EDIT MODAL ============================== -->
-                    <div class="modal fade" id="editJobModal" tabindex="-1"
-                            aria-labelledby="editJobModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">      
-                            <form method="POST" action="functions/auth.php">
-                                <input type="hidden" name="EditFaculty" value="true">
 
-                                <div class="modal-header">
-                                <h5 class="modal-title" id="editJobModalLabel">Edit Job Title</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
-                                </div>
+                   <!-- ===== EDIT FACULTY MODAL ================================= -->
+<div class="modal fade" id="editJobModal" tabindex="-1"
+     aria-labelledby="editJobModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <form method="POST" action="functions/auth.php" enctype="multipart/form-data">
+        <input type="hidden" name="EditFaculty" value="true">
+        <input type="hidden" name="editJobId" id="editJobId"><!-- row‑ID -->
 
-                                <div class="modal-body">
-                                <input type="hidden" name="editJobId" id="editJobId">
-                                <div class="mb-3">
-                                    <label for="editJobTitle" class="form-label">Job Title</label>
-                                    <input type="text" class="form-control" id="editJobTitle"
-                                        name="editJobTitle" required>
-                                </div>
-                                </div>
+        <div class="modal-header">
+          <h5 class="modal-title">Edit profile</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
 
-                                <div class="modal-footer">        <!-- typo fixed -->
-                                <button type="submit" name="updateJob"
-                                        class="btn btn-primary">Save Changes</button>
-                                </div>
-                            </form>
-                            </div>
-                        </div>
-                        </div>
+        <div class="modal-body">
 
-                  <!-- ==================== DELETE MODAL ===================== -->
+          <!-- avatar -->
+          <div class="text-center mb-3">
+            <label for="imageID">
+              <img src="../../assets/profile/users.png"
+                   id="editImagePreview"
+                   class="img-thumbnail"
+                   style="width:200px;border-radius:50%;">
+            </label>
+            <input type="file" id="imageID" name="profile" accept="image/*"
+                   style="display:none" onchange="previewImage(event)">
+          </div>
+
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label">Faculty ID</label>
+              <input class="form-control" id="faculty_id" name="faculty_id" maxlength="10">
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label">Full Name</label>
+              <input class="form-control" id="fulname" name="fulname">
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label">Department</label>
+              <select class="form-select" id="departmentSelect" name="department">
+                <option value="" disabled selected>Select department</option>
+                <?php foreach ($departments as $d): ?>
+                  <option value="<?= $d['department_id'] ?>">
+                    <?= htmlspecialchars($d['department_name'].' – '.$d['department_code']) ?>
+                  </option>
+                <?php endforeach; ?>
+              </select>
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label">Email</label>
+              <input type="email" class="form-control" id="email" name="email">
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label">Position</label>
+              <input class="form-control" id="position" name="position">
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label">Subject</label>
+              <select class="form-select" id="subjectSelect" name="subject_id">
+                <option value="" disabled selected>Select subject</option>
+                <?php foreach ($subjects as $s): ?>
+                  <option value="<?= $s['subject_id'] ?>">
+                    <?= htmlspecialchars($s['subject_code'].' – '.$s['subject_name']) ?>
+                  </option>
+                <?php endforeach; ?>
+              </select>
+            </div>
+          </div>
+        </div><!-- /.modal‑body -->
+
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary" name="updateJob">
+            Save Changes
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+            <!-- ==================== DELETE MODAL ===================== -->
            <div class="modal fade" id="deleteJobModal" tabindex="-1" aria-labelledby="deleteJobModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <form method="POST" action="functions/auth.php" class="modal-content">
@@ -90,8 +153,8 @@
                     </div>
                 </div>
 
+                </div>
             </div>
-        </div>
     </div>
     <div>
         <!-- ==================== ADD MODAL ===================== -->
@@ -111,10 +174,10 @@
                     <div class="g-3 d-flex flex-column" >
 
                     <div class="col-md-4 text-center w-100 mb-3">
-                        <label for="imageID"><img src="../../assets/profile/users.png" class="img-thumbnail mb-2" id="profilePreview" alt="Profile preview" style="width: 200px; height: auto; border-radius: 50%;"></label>
+                        <label for="profile"><img src="../../assets/profile/users.png" class="img-thumbnail mb-2" id="profilePreview" alt="Profile preview" style="width: 200px; height: auto; border-radius: 50%;"></label>
                         
-                        <input class="form-control" type="file" name="profile" id="imageID"
-                                accept="image/*" style="display: none;" onchange="previewImage(event)">
+                        <input class="form-control" type="file" name="profile" id="profile"
+                                accept="image/*" onchange="previewImage(event)">
                     </div>
                         <div class="col-md-12">
                         <div class="row g-3  d-flex flex-column">

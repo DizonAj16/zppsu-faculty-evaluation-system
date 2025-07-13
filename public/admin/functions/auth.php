@@ -6,9 +6,10 @@ require_once 'control.php';
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     if(isset($_POST["addFaculty"]) && $_POST["addFaculty"] == "true"){
-        $faculty_id = $_POST["faculty_id"];
-        $fullname = $_POST["fullname"];
-        $department = $_POST["department"];
+        echo $faculty_id = $_POST["faculty_id"];
+        echo '<br>';
+        echo $fullname = $_POST["fullname"]; echo '<br>';
+        echo $department = $_POST["department"]; echo '<br>';
         $email = $_POST["email"];
         $position = $_POST["position"];
         $subject_id = intval($_POST["subject_id"]);
@@ -16,7 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $errors = [];
 
         if (isset($_FILES["profile"]) && $_FILES["profile"]["error"] === 0) {
-                $profile = $_FILES["profile"];
+                echo $profile = $_FILES["profile"];
 
                 if (empty_image($profile)) {
                     $errors["image_Empty"] = "Please insert your profile image!";
@@ -93,7 +94,52 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             die("❌ Delete failed: " . $e->getMessage());
         }
     
-    }elseif(isset($_POST["EditFaculty"]) && $_POST["EditFaculty"] === "true"){
-        echo $faculty_id = $_POST["editJobId"] ?? 'sdljfgbsjhdfg';
-    }   
+    }elseif (isset($_POST['EditFaculty']) && $_POST['EditFaculty'] === 'true') {
+
+    /* ---------------- grab POST values ---------------- */
+    $id          = $_POST['editJobId']   ?? null;          // primary‑key id
+    $facultyCode = $_POST['faculty_id']  ?? '';            // the visible code
+    $fullName    = $_POST['fulname']     ?? '';
+    $email       = $_POST['email']       ?? '';
+    $position    = $_POST['position']    ?? '';
+
+    $subjectId   = $_POST['subject_id']  ?? null;          // may be null
+    $deptId      = $_POST['department']  ?? null;          // name matches <select>
+
+    if (!$id) {
+        header('Location: ../admin.php?page=faculty&failed=1');
+        exit;
+    }
+
+    try {
+        $sql = "UPDATE faculty SET
+                    faculty_id   = :faculty_code,
+                    fulname      = :full_name,
+                    subject_id   = :subject_id,
+                    DEPTid       = :dept_id,
+                    email        = :email,
+                    position     = :position
+                WHERE id = :id";         
+
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([
+            ':faculty_code' => $facultyCode,
+            ':full_name'    => $fullName,
+            ':subject_id'   => $subjectId ?: null,
+            ':dept_id'      => $deptId    ?: null,
+            ':email'        => $email,
+            ':position'     => $position,
+            ':id'           => $id
+        ]);
+
+        header('Location: ../admin.php?page=faculty&updated=1');
+        exit;
+
+    } catch (PDOException $e) {
+        error_log('Faculty update failed: ' . $e->getMessage());
+        header('Location: ../admin.php?page=faculty&failed=1');
+        exit;
+    }
+}
+
 }
