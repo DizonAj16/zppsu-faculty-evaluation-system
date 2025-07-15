@@ -15,22 +15,62 @@ include __DIR__ . '../../../includes/header-user.php';
 </div>
 
 <script>
-    
+    let originalEditImage = ""; // store the original image URL
+
+    function editFaculty(id, facultyId, fullName, email, position, subjectId, deptId, userProfile) {
+        document.getElementById("editJobId").value = id;
+        document.getElementById("faculty_id").value = facultyId;
+        document.getElementById("fulname").value = fullName;
+        document.getElementById("email").value = email;
+        document.getElementById("position").value = position;
+        document.getElementById("subjectSelect").value = subjectId;
+        document.getElementById("departmentSelect").value = deptId;
+
+        // ✅ Set original profile image
+        const profilePath = userProfile ? `../../assets/upload/${userProfile}` : "../../assets/profile/users.png";
+        const preview = document.getElementById("editImagePreview");
+        preview.src = profilePath;
+        originalEditImage = profilePath;
+
+        // ✅ Reset file input just in case
+        document.getElementById("imageID").value = "";
+    }
+
+    function previewEditImage(event) {
+        const preview = document.getElementById("editImagePreview");
+        preview.src = URL.createObjectURL(event.target.files[0]);
+
+        
+    }
+
+
+    function viewFaculty(faculty_id, fullname, department, email, position, subject, profile) {
+        document.getElementById('viewFacultyId').value = faculty_id;
+        document.getElementById('viewFullName').value = fullname;
+        document.getElementById('viewDepartment').value = department;
+        document.getElementById('viewEmail').value = email;
+        document.getElementById('viewPosition').value = position;
+        document.getElementById('viewSubject').value = subject;
+
+        // ✅ Profile Picture
+        const imgPath = profile && profile !== "" ? `../../assets/upload/${profile}` : "../../assets/profile/users.png";
+        document.getElementById('viewImagePreview').src = imgPath;
+    }
     document.addEventListener('DOMContentLoaded', () => {
         if (added) {
             console.log("Showing updateReq toast");
             Swal.fire({
-            toast: true,
-            position: 'top-end',
-            icon: 'success',
-            title: 'Subject added successfully!.',
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-            customClass: { popup: 'swal2-row-toast' }
+                toast: true,
+                position: 'top-end',
+                icon: 'success',
+                title: 'Subject added successfully!.',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                customClass: { popup: 'swal2-row-toast' }
             });
             removeUrlParams(['added']);
-        }function removeUrlParams(params) {
+        } function removeUrlParams(params) {
             const url = new URL(window.location);
             params.forEach(param => url.searchParams.delete(param));
             window.history.replaceState({}, document.title, url.toString());
@@ -81,10 +121,14 @@ include __DIR__ . '../../../includes/header-user.php';
                 content.innerHTML = html;
 
                 // Rebind delete modals
-                bindDeleteModal('confirmDeleteModalSubject', 'confirmDeleteBtnSubject', 'data-subject-id', '../admin/processes/process_delete_subject.php');
-                bindDeleteModal('confirmDeleteModalProgram', 'confirmDeleteBtnProgram', 'data-program-id', '../admin/processes/process_delete_program.php');
-                bindDeleteModal('confirmDeleteModalDepartment', 'confirmDeleteBtnDepartment', 'data-department-id', '../admin/processes/process_delete_department.php');
-                bindDeleteModal('confirmDeleteModalYearSection', 'confirmDeleteBtnYearSection', 'data-year-section-id', '../admin/processes/process_delete_year_section.php');
+                bindDeleteModal('confirmDeleteModalSubject', 'confirmDeleteBtnSubject', 'data-subject-id',
+                    '../admin/processes/process_delete_subject.php');
+                bindDeleteModal('confirmDeleteModalProgram', 'confirmDeleteBtnProgram', 'data-program-id',
+                    '../admin/processes/process_delete_program.php');
+                bindDeleteModal('confirmDeleteModalDepartment', 'confirmDeleteBtnDepartment', 'data-department-id',
+                    '../admin/processes/process_delete_department.php');
+                bindDeleteModal('confirmDeleteModalYearSection', 'confirmDeleteBtnYearSection', 'data-year-section-id',
+                    '../admin/processes/process_delete_year_section.php');
 
                 // ✅ Rebind all generic edit modals
                 bindEditModals();
