@@ -1,45 +1,51 @@
-<div class="p-4">
+    <div class="p-4">
     <div class="toast-container position-absolute top-0 end-0 p-3">
-        <?php
-        if (isset($_GET['added'])):
-            ?>
-            <div id="addedToast" class="toast text-white border-0 rounded-4 shadow-lg" role="alert" aria-live="assertive"
-                aria-atomic="true" style="background: linear-gradient(135deg, #28a745, #218838);">
+        <?php if (isset($_GET['added'])): ?>
+            <div id="addedToast" 
+                class="toast text-white border-0 rounded-4 shadow-lg" 
+                role="alert" aria-live="assertive" aria-atomic="true"
+                style="background: linear-gradient(135deg, #28a745, #218838);">
                 <div class="d-flex align-items-center p-2">
-                    <i class="bi bi-check-circle-fill fs-4 me-2"></i>
                     <div class="toast-body fs-6 fw-semibold">
-                        Subject added successfully!
+                        ✅ Subject added successfully!
                     </div>
                     <button type="button" class="btn-close btn-close-white ms-2" data-bs-dismiss="toast"
                         aria-label="Close"></button>
                 </div>
             </div>
-            <?php
-        endif;
-        ?>
+        <?php endif; ?>
 
         <?php if (isset($_GET['deleted'])): ?>
-            <div id="deletedToast" class="toast align-items-center text-white bg-danger border-0" role="alert">
-                <div class="d-flex">
-                    <div class="toast-body">
-                        Subject deleted successfully!
+            <div id="deletedToast" 
+                class="toast text-white border-0 rounded-4 shadow-lg" 
+                role="alert" aria-live="assertive" aria-atomic="true"
+                style="background: linear-gradient(135deg, #dc3545, #b02a37);">
+                <div class="d-flex align-items-center p-2">
+                    <div class="toast-body fs-6 fw-semibold">
+                        ❌ Subject deleted successfully!
                     </div>
-                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                    <button type="button" class="btn-close btn-close-white ms-2" data-bs-dismiss="toast"
+                        aria-label="Close"></button>
                 </div>
             </div>
         <?php endif; ?>
 
         <?php if (isset($_GET['edited'])): ?>
-            <div id="editedToast" class="toast align-items-center text-white bg-info border-0" role="alert">
-                <div class="d-flex">
-                    <div class="toast-body">
-                        Subject updated successfully!
+            <div id="editedToast" 
+                class="toast text-white border-0 rounded-4 shadow-lg" 
+                role="alert" aria-live="assertive" aria-atomic="true"
+                style="background: linear-gradient(135deg, #17a2b8, #117a8b);">
+                <div class="d-flex align-items-center p-2">
+                    <div class="toast-body fs-6 fw-semibold">
+                        ✏️ Subject updated successfully!
                     </div>
-                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                    <button type="button" class="btn-close btn-close-white ms-2" data-bs-dismiss="toast"
+                        aria-label="Close"></button>
                 </div>
             </div>
         <?php endif; ?>
     </div>
+
 
 
 

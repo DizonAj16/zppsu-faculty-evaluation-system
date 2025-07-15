@@ -13,6 +13,7 @@ if (isset($_GET['subject']) && $_GET['subject'] === 'success') {
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ZPPSU Faculty Evaluation System</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Bootstrap 5 CDN -->
