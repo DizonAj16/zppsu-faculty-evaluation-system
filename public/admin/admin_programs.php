@@ -44,7 +44,13 @@
     <h2 class="mb-4">Programs Management</h2>
     <div class="card shadow-sm mb-4">
         <div class="card-body">
-            <h5 class="card-title">Programs List</h5>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="card-title">Programs List</h5>
+                <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addProgramModal">
+                    <i class="bi bi-plus-circle"></i> Add Program
+                </button>
+            </div>
+
             <div class="table-responsive">
                 <table class="table table-striped table-bordered table-hover align-middle mb-0">
                     <thead class="table-light">
@@ -112,9 +118,7 @@
     </div>
 
     <!-- Add Program Button & Modal -->
-    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addProgramModal">
-        <i class="bi bi-plus-circle"></i> Add Program
-    </button>
+
 
     <div class="modal fade" id="addProgramModal" tabindex="-1" aria-labelledby="addProgramLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-scrollable">

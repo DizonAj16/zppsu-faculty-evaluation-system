@@ -37,7 +37,12 @@
     <h2 class="mb-4">Departments Management</h2>
     <div class="card shadow-sm mb-4">
         <div class="card-body">
-            <h5 class="card-title">Departments List</h5>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="card-title">Departments List</h5>
+                <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addDepartmentModal">
+                    <i class="bi bi-plus-circle"></i> Add Department
+                </button>
+            </div>
             <div class="table-responsive">
                 <table class="table table-striped table-bordered table-hover align-middle mb-0">
                     <thead class="table-light">
@@ -100,9 +105,7 @@
         </div>
     </div>
 
-    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addDepartmentModal">
-        <i class="bi bi-plus-circle"></i> Add Department
-    </button>
+
 
     <!-- Add Modal -->
     <div class="modal fade" id="addDepartmentModal" tabindex="-1" aria-labelledby="addLabel" aria-hidden="true">

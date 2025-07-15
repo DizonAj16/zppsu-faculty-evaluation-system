@@ -15,8 +15,11 @@ include __DIR__ . '../../../includes/header-user.php';
 </div>
 
 <script>
-    let originalEditImage = ""; // store the original image URL
+    let originalEditImage = ""; // ✅ Global variable to store original profile image
 
+    /* ===========================
+       ✅ EDIT FACULTY MODAL LOGIC
+    ============================ */
     function editFaculty(id, facultyId, fullName, email, position, subjectId, deptId, userProfile) {
         document.getElementById("editJobId").value = id;
         document.getElementById("faculty_id").value = facultyId;
@@ -26,21 +29,30 @@ include __DIR__ . '../../../includes/header-user.php';
         document.getElementById("subjectSelect").value = subjectId;
         document.getElementById("departmentSelect").value = deptId;
 
-        // ✅ Set original profile image
+        // ✅ Set original profile image when modal opens
         const profilePath = userProfile ? `../../assets/upload/${userProfile}` : "../../assets/profile/users.png";
         const preview = document.getElementById("editImagePreview");
         preview.src = profilePath;
         originalEditImage = profilePath;
 
-        // ✅ Reset file input just in case
+        // ✅ Reset file input to prevent accidental upload
         document.getElementById("imageID").value = "";
     }
 
     function previewEditImage(event) {
         const preview = document.getElementById("editImagePreview");
         preview.src = URL.createObjectURL(event.target.files[0]);
+    }
 
-        
+    function bindEditModalReset() {
+        const modal = document.getElementById('editJobModal');
+        if (modal) {
+            modal.addEventListener('hidden.bs.modal', function () {
+                // ✅ Reset image to original & clear input when modal closes
+                document.getElementById("editImagePreview").src = originalEditImage;
+                document.getElementById("imageID").value = "";
+            });
+        }
     }
 
 

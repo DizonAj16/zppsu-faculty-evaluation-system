@@ -14,7 +14,12 @@ $faculty = $facultyGet["faculty"];
   <h2 class="mb-4">Faculty Management</h2>
   <div class="card shadow-sm mb-4">
     <div class="card-body" style="height: 70vh; overflow-y: auto;">
-      <h5 class="card-title mb-3">Faculty List</h5>
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h5 class="card-title mb-0">Faculty List</h5>
+        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addFacultyModal">
+          <i class="bi bi-plus-circle"></i> Add Faculty
+        </button>
+      </div>
 
       <div class="row g-3">
         <?php if (empty($faculty)): ?>
@@ -26,10 +31,10 @@ $faculty = $facultyGet["faculty"];
         <?php else: ?>
           <?php foreach ($faculty as $fuck): ?>
             <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-              <div class="card text-center shadow h-100" style="background-color: #800000; color: #fff;">
+              <div class="card text-center shadow h-100 rounded-4" style="background-color: #800000; color: #fff;">
                 <div class="card-body d-flex flex-column align-items-center">
                   <img src="../../assets/upload/<?= $fuck["user_profile"] ?? 'helllo?' ?>" alt="Profile"
-                    class="rounded-circle mb-2" style="width: 100px; height: 100px; object-fit: cover;">
+                    class="rounded-circle mb-2" style="width: 200px; height: 200px; object-fit: cover;">
 
                   <p class="mb-1 small"><?= $fuck["faculty_id"] ?? 'feeling special ka boi?' ?></p>
                   <h5 class="card-title fw-bold mb-1"><?= htmlspecialchars($fuck["fulname"]) ?></h5>
@@ -327,8 +332,5 @@ $faculty = $facultyGet["faculty"];
       </div>
 
     </div>
-    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addFacultyModal">
-      <i class="bi bi-plus-circle"></i> Add Faculty
-    </button>
   </div>
 </div>

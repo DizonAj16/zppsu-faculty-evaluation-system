@@ -1,11 +1,11 @@
 <?php
-    require_once '../../config/db.php';
-    $added = false;
-    if(isset($_GET['subject']) && $_GET['subject'] === 'success'){
-        $added = true;
-    }
+require_once '../../config/db.php';
+$added = false;
+if (isset($_GET['subject']) && $_GET['subject'] === 'success') {
+    $added = true;
+}
 
- 
+
 ?>
 
 <!DOCTYPE html>
@@ -17,17 +17,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Bootstrap 5 CDN -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css?v=<?php echo time(); ?>"
-        rel="stylesheet"> 
+        rel="stylesheet">
 
     <link rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css?v=<?php echo time(); ?>">
-        <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script> -->
-        <script src="../../assets/js/main.js" defer></script>
-        <script src="../../assets/js/arjec.js" defer></script>
-        
-        <script>
-            const added = <?php echo json_encode($added); ?>;
-        </script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script> -->
+    <script src="../../assets/js/main.js" defer></script>
+    <script src="../../assets/js/arjec.js" defer></script>
+
+    <script>
+        const added = <?php echo json_encode($added); ?>;
+    </script>
     <style>
         .card {
             background: rgba(255, 255, 255, 0.95);
@@ -35,6 +35,22 @@
 
         .navbar.bg-danger {
             background-color: #800000 !important;
+        }
+
+        .toast {
+            animation: slideInRight 0.6s ease forwards;
+        }
+
+        @keyframes slideInRight {
+            0% {
+                opacity: 0;
+                transform: translateX(100%);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateX(0);
+            }
         }
     </style>
 </head>

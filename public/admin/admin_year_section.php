@@ -31,7 +31,12 @@
 
     <div class="card shadow-sm mb-4">
         <div class="card-body">
-            <h5 class="card-title">Year &amp; Section List</h5>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="card-title">Year &amp; Section List</h5>
+                <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addYearSectionModal">
+                    <i class="bi bi-plus-circle"></i> Add Year &amp; Section
+                </button>
+            </div>
             <div class="table-responsive">
                 <table class="table table-bordered table-hover align-middle mb-0">
                     <thead class="table-light">
@@ -85,9 +90,6 @@
         </div>
     </div>
 
-    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addYearSectionModal">
-        <i class="bi bi-plus-circle"></i> Add Year &amp; Section
-    </button>
 
     <!-- Add Modal -->
     <div class="modal fade" id="addYearSectionModal" tabindex="-1">

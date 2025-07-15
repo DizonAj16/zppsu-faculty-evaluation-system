@@ -132,7 +132,6 @@ try {
         ['INTERNET OF THINGS', 'ITDC 1', 'BS INFOTECH', 'CICS', 'Major'],
         ['COMPUTER PROGRAMMING 1', 'ITCC 102', 'BS INFOTECH', 'CICS', 'Major'],
         ['DATA STRUCTURES AND ALGORITHMS', 'ITPC 102', 'BS INFOTECH', 'CICS', 'Major'],
-        ['ETHICS', 'GE 119', 'BS INFOTECH', 'CICS', 'Minor'],
         ['Life, Writings and Works of Rizal', 'Rizal', 'BS INFOTECH', 'CICS', 'Minor']
     ];
 

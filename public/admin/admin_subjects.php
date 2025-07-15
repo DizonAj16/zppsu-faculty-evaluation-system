@@ -1,19 +1,22 @@
 <div class="p-4">
     <div class="toast-container position-absolute top-0 end-0 p-3">
-        <?php 
-        // if (isset($_GET['added'])):
-         ?>
-            <!-- <div id="addedToast" class="toast align-items-center text-white bg-success border-0" role="alert">
-                <div class="d-flex">
-                    <div class="toast-body">
+        <?php
+        if (isset($_GET['added'])):
+            ?>
+            <div id="addedToast" class="toast text-white border-0 rounded-4 shadow-lg" role="alert" aria-live="assertive"
+                aria-atomic="true" style="background: linear-gradient(135deg, #28a745, #218838);">
+                <div class="d-flex align-items-center p-2">
+                    <i class="bi bi-check-circle-fill fs-4 me-2"></i>
+                    <div class="toast-body fs-6 fw-semibold">
                         Subject added successfully!
                     </div>
-                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                    <button type="button" class="btn-close btn-close-white ms-2" data-bs-dismiss="toast"
+                        aria-label="Close"></button>
                 </div>
-            </div> -->
-        <?php 
-    // endif;
-     ?>
+            </div>
+            <?php
+        endif;
+        ?>
 
         <?php if (isset($_GET['deleted'])): ?>
             <div id="deletedToast" class="toast align-items-center text-white bg-danger border-0" role="alert">
@@ -44,7 +47,13 @@
     <h2 class="mb-4">Subjects Management</h2>
     <div class="card shadow-sm mb-4">
         <div class="card-body">
-            <h5 class="card-title">Subjects List</h5>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="card-title">Subjects List</h5>
+                <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addSubjectModal"><i
+                        class="bi bi-plus-circle"></i>
+                    Add Subject
+                </button>
+            </div>
             <div class="table-responsive">
                 <table class="table table-striped table-bordered table-hover align-middle mb-0">
                     <thead class="table-light">
@@ -126,11 +135,7 @@
         </div>
     </div>
     <div>
-        <!-- Button trigger modal -->
-        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addSubjectModal"><i
-                class="bi bi-plus-circle"></i>
-            Add Subject
-        </button>
+
 
         <!-- add Modal -->
         <div class="modal fade" id="addSubjectModal" tabindex="-1" aria-labelledby="exampleModalLabel"
