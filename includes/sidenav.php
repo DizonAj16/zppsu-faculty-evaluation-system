@@ -1,5 +1,13 @@
+<?php
+$currentPage = basename($_SERVER['PHP_SELF']);
+?>
 <!-- Sidenav Start -->
 <style>
+    #sidebarToggle {
+        position: relative;
+        /* higher than sidebar */
+    }
+
     #sidebarMenu {
         height: 100%;
         width: 250px;
@@ -162,6 +170,60 @@
             left: 0;
         }
     }
+
+    /* Mobile-specific styles */
+    @media (max-width: 767.98px) {
+        #sidebarMenu {
+            position: fixed;
+            top: 0;
+            left: -250px;
+            /* Hidden by default */
+            height: 100vh;
+            z-index: 1050;
+            width: 250px !important;
+            transition: left 0.3s ease-in-out;
+            pointer-events: none;
+            /* 👈 Prevents blocking clicks when hidden */
+        }
+
+        #sidebarMenu.show {
+            left: 0;
+            /* Slide in */
+            pointer-events: auto;
+            /* 👈 Re-enable when visible */
+        }
+
+        #sidebarOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            display: none;
+            z-index: 1049;
+        }
+
+        #sidebarOverlay.active {
+            display: block;
+        }
+
+        /* Make links larger for touch screens */
+        #sidebarMenu .nav-link {
+            padding: 12px 16px;
+            font-size: 16px;
+        }
+
+        /* Hide collapse button in mobile */
+        #sidebarCollapseBtn {
+            display: none !important;
+        }
+
+        #dashboardContainer {
+            margin-left: 0 !important;
+            margin-top: 30px;
+        }
+    }
 </style>
 <div class="d-lg-none">
     <button class="btn btn-danger m-2" id="sidebarToggle">
@@ -179,38 +241,45 @@
         </div>
         <ul class="nav flex-column flex-grow-1">
             <li class="nav-item">
-                <a class="nav-link" href="#" data-page="dashboard" data-bs-toggle="tooltip" data-bs-placement="top"
+                <a class="nav-link <?php if ($currentPage == 'admin_dashboard.php')
+                    echo 'active'; ?>" href="admin_dashboard.php" data-bs-toggle="tooltip" data-bs-placement="top"
                     title="Dashboard"><i class="bi bi-house me-2"></i><span>Dashboard</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#" data-page="faculty" data-bs-toggle="tooltip" data-bs-placement="top"
+                <a class="nav-link <?php if ($currentPage == 'admin_faculty.php')
+                    echo 'active'; ?>" href="admin_faculty.php" data-bs-toggle="tooltip" data-bs-placement="top"
                     title="Faculty"><i class="bi bi-people me-2"></i><span>Faculty</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#" data-page="programs" data-bs-toggle="tooltip" data-bs-placement="top"
+                <a class="nav-link <?php if ($currentPage == 'admin_programs.php')
+                    echo 'active'; ?>" href="admin_programs.php" data-bs-toggle="tooltip" data-bs-placement="top"
                     title="Programs"><i class="bi bi-journal-code me-2"></i><span>Programs</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#" data-page="subjects" data-bs-toggle="tooltip" data-bs-placement="top"
+                <a class="nav-link <?php if ($currentPage == 'admin_subjects.php')
+                    echo 'active'; ?>" href="admin_subjects.php" data-bs-toggle="tooltip" data-bs-placement="top"
                     title="Subjects"><i class="bi bi-book me-2"></i><span>Subjects</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#" data-page="departments" data-bs-toggle="tooltip" data-bs-placement="top"
+                <a class="nav-link <?php if ($currentPage == 'admin_departments.php')
+                    echo 'active'; ?>" href="admin_departments.php" data-bs-toggle="tooltip" data-bs-placement="top"
                     title="Departments"><i class="bi bi-building me-2"></i><span>Departments</span></a>
             </li>
-
             <li class="nav-item">
-                <a class="nav-link" href="#" data-page="year-section" data-bs-toggle="tooltip" data-bs-placement="top"
+                <a class="nav-link <?php if ($currentPage == 'admin_year_section.php')
+                    echo 'active'; ?>" href="admin_year_section.php" data-bs-toggle="tooltip" data-bs-placement="top"
                     title="Year and Section"><i class="bi bi-collection me-2"></i><span>Year and Section</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#" data-page="faculty-evaluation" data-bs-toggle="tooltip"
+                <a class="nav-link <?php if ($currentPage == 'admin_faculty_evaluation.php')
+                    echo 'active'; ?>" href="admin_faculty_evaluation.php" data-bs-toggle="tooltip"
                     data-bs-placement="top" title="Faculty Evaluation"><i
                         class="bi bi-clipboard-check me-2"></i><span>Faculty
                         Evaluation</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#" data-page="settings" data-bs-toggle="tooltip" data-bs-placement="top"
+                <a class="nav-link <?php if ($currentPage == 'admin_settings.php')
+                    echo 'active'; ?>" href="admin_settings.php" data-bs-toggle="tooltip" data-bs-placement="top"
                     title="Settings"><i class="bi bi-gear me-2"></i><span>Settings</span></a>
             </li>
         </ul>

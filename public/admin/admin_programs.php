@@ -1,226 +1,288 @@
-<div class="p-4">
-    <div class="toast-container position-fixed top-0 end-0 p-3">
-        <?php if (isset($_GET['added'])): ?>
-            <div id="addedToast" class="toast align-items-center text-bg-success border-0" role="alert"
-                aria-live="assertive" aria-atomic="true">
-                <div class="d-flex">
-                    <div class="toast-body">
-                        Program added successfully!
-                    </div>
-                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
-                </div>
-            </div>
-        <?php endif; ?>
-
-        <?php if (isset($_GET['deleted'])): ?>
-            <div id="deletedToast" class="toast align-items-center text-bg-danger border-0" role="alert"
-                aria-live="assertive" aria-atomic="true">
-                <div class="d-flex">
-                    <div class="toast-body">
-                        Program deleted successfully!
-                    </div>
-                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
-                </div>
-            </div>
-        <?php endif; ?>
-
-        <?php if (isset($_GET['edited'])): ?>
-            <div id="editedToast" class="toast align-items-center text-bg-primary border-0" role="alert"
-                aria-live="assertive" aria-atomic="true">
-                <div class="d-flex">
-                    <div class="toast-body">
-                        Program edited successfully!
-                    </div>
-                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
-                </div>
-            </div>
-        <?php endif; ?>
+<?php
+require_once __DIR__ . '../../../includes/auth.php';
+require_role('admin');
+require_once '../../includes/header-user.php'; ?>
+<div class="d-flex" id="adminLayout" style="min-height: 100vh;">
+    <div id="sidebarContainer">
+        <?php include '../../includes/sidenav.php'; ?>
     </div>
+    <div id="dashboardContainer" class="flex-grow-1">
+        <div class="container-fluid p-4">
+            <div class="toast-container position-fixed top-0 end-0 p-3">
+                <?php if (isset($_GET['added'])): ?>
+                    <div id="addedToast" class="toast align-items-center text-bg-success border-0" role="alert"
+                        aria-live="assertive" aria-atomic="true">
+                        <div class="d-flex">
+                            <div class="toast-body">
+                                Program added successfully!
+                            </div>
+                            <button type="button" class="btn-close btn-close-white me-2 m-auto"
+                                data-bs-dismiss="toast"></button>
+                        </div>
+                    </div>
+                <?php endif; ?>
 
+                <?php if (isset($_GET['deleted'])): ?>
+                    <div id="deletedToast" class="toast align-items-center text-bg-danger border-0" role="alert"
+                        aria-live="assertive" aria-atomic="true">
+                        <div class="d-flex">
+                            <div class="toast-body">
+                                Program deleted successfully!
+                            </div>
+                            <button type="button" class="btn-close btn-close-white me-2 m-auto"
+                                data-bs-dismiss="toast"></button>
+                        </div>
+                    </div>
+                <?php endif; ?>
 
-
-
-
-    <h2 class="mb-4">Programs Management</h2>
-    <div class="card shadow-sm mb-4">
-        <div class="card-body">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <h5 class="card-title">Programs List</h5>
-                <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addProgramModal">
-                    <i class="bi bi-plus-circle"></i> Add Program
-                </button>
+                <?php if (isset($_GET['edited'])): ?>
+                    <div id="editedToast" class="toast align-items-center text-bg-primary border-0" role="alert"
+                        aria-live="assertive" aria-atomic="true">
+                        <div class="d-flex">
+                            <div class="toast-body">
+                                Program edited successfully!
+                            </div>
+                            <button type="button" class="btn-close btn-close-white me-2 m-auto"
+                                data-bs-dismiss="toast"></button>
+                        </div>
+                    </div>
+                <?php endif; ?>
             </div>
 
-            <div class="table-responsive">
-                <table class="table table-striped table-bordered table-hover align-middle mb-0">
-                    <thead class="table-light">
-                        <tr>
-                            <th>#</th>
-                            <th>Program Name</th>
-                            <th>Code</th>
-                            <th>Department</th>
-                            <th class="text-center">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                        require_once '../../config/db.php';
+            <h2 class="mb-4">Programs Management</h2>
+            <div class="card shadow-sm mb-4">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="card-title">Programs List</h5>
+                        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addProgramModal">
+                            <i class="bi bi-plus-circle"></i> Add Program
+                        </button>
+                    </div>
 
-                        $stmt = $pdo->query("
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered table-hover align-middle mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Program Name</th>
+                                    <th>Code</th>
+                                    <th>Total Subjects</th>
+                                    <th>Department</th>
+                                    <th class="text-center">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                require_once '../../config/db.php';
+
+                                $stmt = $pdo->query("
     SELECT 
         p.program_id, 
         p.program_name, 
         p.program_code, 
         p.department_id,       
-        d.department_code 
+        d.department_code,
+        COUNT(s.subject_id) AS total_subjects
     FROM programs p
     LEFT JOIN departments d ON p.department_id = d.department_id
+    LEFT JOIN subjects s ON p.program_id = s.program_id
+    GROUP BY p.program_id
     ORDER BY p.program_name ASC
 ");
-                        $progams = $stmt->fetchAll();
-                        $count = 1;
 
-                        if (count($progams) > 0):
-                            foreach ($progams as $row):
-                                ?>
-                                <tr>
-                                    <td><?= $count++; ?></td>
-                                    <td><?= htmlspecialchars($row['program_name']) ?></td>
-                                    <td><?= htmlspecialchars($row['program_code']) ?></td>
-                                    <td><?= htmlspecialchars($row['department_code']) ?></td>
-                                    <td class="text-center">
-                                        <button class="btn btn-sm btn-primary me-1" data-bs-toggle="modal"
-                                            data-bs-target="#editProgramModal" data-program-id="<?= $row['program_id'] ?>"
-                                            data-program-name="<?= htmlspecialchars($row['program_name']) ?>"
-                                            data-program-code="<?= htmlspecialchars($row['program_code']) ?>"
-                                            data-department-id="<?= $row['department_id'] ?>">
-                                            <i class="bi bi-pencil"></i> Edit
-                                        </button>
-                                        <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal"
-                                            data-bs-target="#confirmDeleteModalProgram"
-                                            data-program-id="<?= $row['program_id'] ?>">
-                                            <i class="bi bi-trash"></i> Delete
-                                        </button>
-                                    </td>
-                                </tr>
-                                <?php
-                            endforeach;
-                        else:
-                            ?>
-                            <tr>
-                                <td colspan="6" class="text-center text-muted">No Programs found.</td>
-                            </tr>
-                        <?php endif; ?>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
+                                $progams = $stmt->fetchAll();
+                                $count = 1;
 
-    <!-- Add Program Button & Modal -->
-
-
-    <div class="modal fade" id="addProgramModal" tabindex="-1" aria-labelledby="addProgramLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-scrollable">
-            <form method="post" action="../admin/processes/process_add_program.php" class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Add Program</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <!-- Program Name -->
-                    <div class="mb-3">
-                        <label for="programName" class="form-label">Program Name</label>
-                        <input type="text" class="form-control" id="programName" name="program_name" required>
+                                if (count($progams) > 0):
+                                    foreach ($progams as $row):
+                                        ?>
+                                        <tr>
+                                            <td><?= $count++; ?></td>
+                                            <td><?= htmlspecialchars($row['program_name']) ?></td>
+                                            <td><?= htmlspecialchars($row['program_code']) ?></td>
+                                            <td><?= $row['total_subjects'] ?></td>
+                                            <td><?= htmlspecialchars($row['department_code']) ?></td>
+                                            <td class="text-center">
+                                                <button class="btn btn-sm btn-primary me-1" data-bs-toggle="modal"
+                                                    data-bs-target="#editProgramModal"
+                                                    data-program-id="<?= $row['program_id'] ?>"
+                                                    data-program-name="<?= htmlspecialchars($row['program_name']) ?>"
+                                                    data-program-code="<?= htmlspecialchars($row['program_code']) ?>"
+                                                    data-department-id="<?= $row['department_id'] ?>">
+                                                    <i class="bi bi-pencil"></i> Edit
+                                                </button>
+                                                <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal"
+                                                    data-bs-target="#confirmDeleteModalProgram"
+                                                    data-program-id="<?= $row['program_id'] ?>">
+                                                    <i class="bi bi-trash"></i> Delete
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <?php
+                                    endforeach;
+                                else:
+                                    ?>
+                                    <tr>
+                                        <td colspan="6" class="text-center text-muted">No Programs found.</td>
+                                    </tr>
+                                <?php endif; ?>
+                            </tbody>
+                        </table>
                     </div>
-
-                    <!-- Program Code -->
-                    <div class="mb-3">
-                        <label for="programCode" class="form-label">Program Code</label>
-                        <input type="text" class="form-control" id="programCode" name="program_code" required>
-                    </div>
-
-                    <!-- Department Dropdown -->
-                    <div class="mb-3">
-                        <label for="department" class="form-label">Department</label>
-                        <select id="department" name="department_id" class="form-select" required>
-                            <option value="">-- Select Department --</option>
-                            <?php
-                            $stmt = $pdo->query("SELECT * FROM departments ORDER BY department_name ASC");
-                            while ($row = $stmt->fetch()) {
-                                echo "<option value='{$row['department_id']}'>{$row['department_name']}</option>";
-                            }
-                            ?>
-                        </select>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-success">Add Program</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Confirm Delete Modal -->
-    <div class="modal fade" id="confirmDeleteModalProgram" tabindex="-1" aria-labelledby="confirmDeleteModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Confirm Deletion</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    Are you sure you want to delete this program?
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <a href="#" class="btn btn-danger" id="confirmDeleteBtnProgram">Delete</a>
                 </div>
             </div>
-        </div>
-    </div>
 
-    <!-- Edit Program Modal -->
-    <div class="modal fade" id="editProgramModal" tabindex="-1" aria-labelledby="editProgramLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-scrollable">
-            <form method="post" action="../admin/processes/process_edit_program.php" class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Edit Program</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <!-- Add Program Button & Modal -->
+
+
+            <div class="modal fade" id="addProgramModal" tabindex="-1" aria-labelledby="addProgramLabel"
+                aria-hidden="true">
+                <div class="modal-dialog modal-dialog-scrollable">
+                    <form method="post" action="../admin/processes/programs_process.php" class="modal-content">
+                        <input type="hidden" name="action" value="add">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Add Program</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <!-- Program Name -->
+                            <div class="mb-3">
+                                <label for="programName" class="form-label">Program Name</label>
+                                <input type="text" class="form-control" id="programName" name="program_name" required>
+                            </div>
+
+                            <!-- Program Code -->
+                            <div class="mb-3">
+                                <label for="programCode" class="form-label">Program Code</label>
+                                <input type="text" class="form-control" id="programCode" name="program_code" required>
+                            </div>
+
+                            <!-- Department Dropdown -->
+                            <div class="mb-3">
+                                <label for="department" class="form-label">Department</label>
+                                <select id="department" name="department_id" class="form-select" required>
+                                    <option value="">-- Select Department --</option>
+                                    <?php
+                                    $stmt = $pdo->query("SELECT * FROM departments ORDER BY department_name ASC");
+                                    while ($row = $stmt->fetch()) {
+                                        echo "<option value='{$row['department_id']}'>{$row['department_name']}</option>";
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-success">Add Program</button>
+                        </div>
+                    </form>
                 </div>
-                <div class="modal-body">
-                    <input type="hidden" name="program_id" data-edit-field="program-id">
+            </div>
 
-                    <div class="mb-3">
-                        <label for="editProgramName" class="form-label">Program Name</label>
-                        <input type="text" class="form-control" name="program_name" data-edit-field="program-name"
-                            required>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="editProgramCode" class="form-label">Program Code</label>
-                        <input type="text" class="form-control" name="program_code" data-edit-field="program-code"
-                            required>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="editDepartment" class="form-label">Department</label>
-                        <select name="department_id" class="form-select" data-edit-field="department-id" required>
-                            <option value="">-- Select Department --</option>
-                            <?php
-                            $stmt = $pdo->query("SELECT * FROM departments ORDER BY department_name ASC");
-                            while ($row = $stmt->fetch()) {
-                                echo "<option value='{$row['department_id']}'>{$row['department_name']}</option>";
-                            }
-                            ?>
-                        </select>
+            <!-- Confirm Delete Modal -->
+            <div class="modal fade" id="confirmDeleteModalProgram" tabindex="-1"
+                aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Confirm Deletion</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            Are you sure you want to delete this program?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <a href="#" class="btn btn-danger" id="confirmDeleteBtnProgram">Delete</a>
+                        </div>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Update Program</button>
+            </div>
+
+            <!-- Edit Program Modal -->
+            <div class="modal fade" id="editProgramModal" tabindex="-1" aria-labelledby="editProgramLabel"
+                aria-hidden="true">
+                <div class="modal-dialog modal-dialog-scrollable">
+                    <form method="post" action="../admin/processes/programs_process.php" class="modal-content">
+                        <input type="hidden" name="action" value="edit">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Edit Program</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <input type="hidden" name="program_id" data-edit-field="program-id">
+
+                            <div class="mb-3">
+                                <label for="editProgramName" class="form-label">Program Name</label>
+                                <input type="text" class="form-control" name="program_name"
+                                    data-edit-field="program-name" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="editProgramCode" class="form-label">Program Code</label>
+                                <input type="text" class="form-control" name="program_code"
+                                    data-edit-field="program-code" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="editDepartment" class="form-label">Department</label>
+                                <select name="department_id" class="form-select" data-edit-field="department-id"
+                                    required>
+                                    <option value="">-- Select Department --</option>
+                                    <?php
+                                    $stmt = $pdo->query("SELECT * FROM departments ORDER BY department_name ASC");
+                                    while ($row = $stmt->fetch()) {
+                                        echo "<option value='{$row['department_id']}'>{$row['department_name']}</option>";
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Update Program</button>
+                        </div>
+                    </form>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // ✅ Handle Delete Modal
+        var deleteModal = document.getElementById('confirmDeleteModalProgram');
+        if (deleteModal) {
+            deleteModal.addEventListener('show.bs.modal', function (event) {
+                var button = event.relatedTarget;
+                var programId = button.getAttribute('data-program-id');
+                var deleteBtn = document.getElementById('confirmDeleteBtnProgram');
+                if (deleteBtn && programId) {
+                    deleteBtn.href = "../admin/processes/programs_process.php?action=delete&id=" + encodeURIComponent(programId);
+                }
+            });
+        }
+
+        // ✅ Handle Edit Modal
+        var editModal = document.getElementById('editProgramModal');
+        if (editModal) {
+            editModal.addEventListener('show.bs.modal', function (event) {
+                var button = event.relatedTarget;
+
+                // Get data from the clicked Edit button
+                var programId = button.getAttribute('data-program-id');
+                var programName = button.getAttribute('data-program-name');
+                var programCode = button.getAttribute('data-program-code');
+                var departmentId = button.getAttribute('data-department-id');
+
+                // Fill in the modal fields
+                editModal.querySelector('[data-edit-field="program-id"]').value = programId;
+                editModal.querySelector('[data-edit-field="program-name"]').value = programName;
+                editModal.querySelector('[data-edit-field="program-code"]').value = programCode;
+                editModal.querySelector('[data-edit-field="department-id"]').value = departmentId;
+            });
+        }
+    });
+
+</script>
+
+<?php require_once '../../includes/footer-user.php'; ?>

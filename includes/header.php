@@ -6,8 +6,10 @@
     <title>ZPPSU Faculty Evaluation System</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Bootstrap 5 CDN -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <link href="../assets/css/bootstrap.min.css?v=<?php echo time(); ?>" rel="stylesheet">
+
+    <link href="../assets/css/bootstrap-icons-1.10.5/bootstrap-icons-1.10.5/font/bootstrap-icons.css?v=<?php echo time(); ?>" rel="stylesheet">
+    <script src="../assets/js/bootstrap.bundle.min.js?v=<?php echo time(); ?>"></script>
     <style>
         body.bg-light {
             background-image: url('../assets/background image/izms-zppsu-bg.jpg');
@@ -42,21 +44,12 @@
                 <img src="../assets/logo/zppsu_logo.png" alt="ZPPSU Logo" style="height:40px;margin-right:10px;">
                 ZPPSU Faculty Evaluation System
             </a>
+            </a>
             <span class="ms-auto text-white fw-bold d-flex align-items-center" id="currentTimeWrapper">
-                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor"
-                    class="bi bi-clock me-2" viewBox="0 0 16 16">
-                    <path d="M8 3.5a.5.5 0 0 1 .5.5v4h3a.5.5 0 0 1 0 1H8a.5.5 0 0 1-.5-.5V4a.5.5 0 0 1 .5-.5z" />
-                    <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm0-1A7 7 0 1 1 8 1a7 7 0 0 1 0 14z" />
-                </svg>
+                <i class="bi bi-clock me-2 fs-5"></i>
                 <span id="currentTime"></span>
-                <span class="d-flex align-items-center ms-3 px-2 py-1 rounded calendar-bg-maroon">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
-                        class="bi bi-calendar me-2" viewBox="0 0 16 16">
-                        <path
-                            d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1zm1-1a1 1 0 0 0-1 1v1h14V4a1 1 0 0 0-1-1H2z" />
-                    </svg>
-                    <span id="currentDate"></span>
-                </span>
+                <i class="bi bi-calendar-event ms-3 me-2 fs-5"></i>
+                <span id="currentDate"></span>
             </span>
         </div>
     </nav>

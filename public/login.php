@@ -11,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   if ($loginResult === true) {
     $role = get_role();
     // Show spinner before redirect
-    $redirect = ($role === 'admin') ? 'admin/admin.php' : "{$role}.php";
+    $redirect = ($role === 'admin') ? 'admin/admin_dashboard.php' : "{$role}.php";
     echo <<<HTML
         <div class="modal fade show" id="loadingModal" tabindex="-1" aria-modal="true" role="dialog" style="display:block; background:rgba(0,0,0,0.5);">
           <div class="modal-dialog modal-dialog-centered">
